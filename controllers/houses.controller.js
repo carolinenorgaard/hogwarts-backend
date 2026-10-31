@@ -9,3 +9,18 @@ export async function getAllHouses(req, res) {
     res.status(500).json({ error: "Database error" })
   }
 }
+export async function getSingleHouse(req, res) {
+  try {
+    const id = req.params.id
+    const house = await housesRepository.getHouseById(id)
+
+    if (house) {
+      res.status(200).json(house)
+    } else {
+      res.sendStatus(404)
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Database error" })
+  }
+}
