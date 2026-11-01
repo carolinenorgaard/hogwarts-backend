@@ -1,0 +1,19 @@
+info:
+  name: update student
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: http://localhost:3000/students/5
+  body:
+    type: json
+    data: '{ "name": "Neville L.", "year": 2, "houseId": 1 }'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

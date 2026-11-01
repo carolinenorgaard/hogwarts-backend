@@ -1,0 +1,16 @@
+info:
+  name: delete teacher
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: http://localhost:3000/teachers/4
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
