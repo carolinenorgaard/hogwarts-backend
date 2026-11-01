@@ -3,6 +3,8 @@
 Backend til Hogwarts-projektet lavet med Node.js, Express og PostgreSQL.
 REST API til at håndtere houses, teachers, students og courses på Hogwarts.
 
+Projektet er delt op i routes, controllers og repositories. Der er ingen services, fordi der ikke er nogen komplekse regler, så controllerne snakker direkte med repositories.
+
 ## Sådan kører man projektet
 
 1. `npm install`
