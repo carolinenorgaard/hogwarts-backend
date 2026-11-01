@@ -3,6 +3,8 @@
 Alle endpoints går fra route → controller → repository.
 Mange af dem er ens, så jeg har kun skrevet hvert mønster én gang.
 
+Hvis et id ikke er et tal, eller der mangler en body: send 400
+
 ## GET /houses
 
 - hent alle houses fra databasen
