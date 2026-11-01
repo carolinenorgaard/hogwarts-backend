@@ -19,6 +19,9 @@ export async function getSingleTeacher(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }
@@ -26,13 +29,16 @@ export async function getSingleTeacher(req, res) {
 
 export async function createTeacher(req, res) {
   try {
-    const { name, houseId } = req.body
+    const { name, houseId } = req.body ?? {}
     if (!name) {
       return res.status(400).json({ error: "name is required" })
     }
     const teacher = await teachersRepository.createTeacher(name, houseId)
     res.status(201).json(teacher)
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     if (err.code === "23503") {
       return res.status(400).json({ error: "house does not exist" })
     }
@@ -43,7 +49,7 @@ export async function createTeacher(req, res) {
 
 export async function updateTeacher(req, res) {
   try {
-    const { name, houseId } = req.body
+    const { name, houseId } = req.body ?? {}
     if (!name) {
       return res.status(400).json({ error: "name is required" })
     }
@@ -58,6 +64,9 @@ export async function updateTeacher(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     if (err.code === "23503") {
       return res.status(400).json({ error: "house does not exist" })
     }
@@ -75,6 +84,9 @@ export async function deleteTeacher(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }

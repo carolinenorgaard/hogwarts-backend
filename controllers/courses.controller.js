@@ -19,6 +19,9 @@ export async function getSingleCourse(req, res) {
     course.students = await coursesRepository.getStudentsByCourseId(course.id)
     res.status(200).json(course)
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }
@@ -26,13 +29,16 @@ export async function getSingleCourse(req, res) {
 
 export async function createCourse(req, res) {
   try {
-    const { name, teacherId } = req.body
+    const { name, teacherId } = req.body ?? {}
     if (!name) {
       return res.status(400).json({ error: "name is required" })
     }
     const course = await coursesRepository.createCourse(name, teacherId)
     res.status(201).json(course)
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     if (err.code === "23503") {
       return res.status(400).json({ error: "teacher does not exist" })
     }
@@ -43,7 +49,7 @@ export async function createCourse(req, res) {
 
 export async function updateCourse(req, res) {
   try {
-    const { name } = req.body
+    const { name } = req.body ?? {}
     if (!name) {
       return res.status(400).json({ error: "name is required" })
     }
@@ -54,6 +60,9 @@ export async function updateCourse(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }
@@ -61,7 +70,7 @@ export async function updateCourse(req, res) {
 
 export async function changeTeacher(req, res) {
   try {
-    const { teacherId } = req.body
+    const { teacherId } = req.body ?? {}
     if (!teacherId) {
       return res.status(400).json({ error: "teacherId is required" })
     }
@@ -72,6 +81,9 @@ export async function changeTeacher(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     if (err.code === "23503") {
       return res.status(400).json({ error: "teacher does not exist" })
     }
@@ -82,7 +94,7 @@ export async function changeTeacher(req, res) {
 
 export async function addStudent(req, res) {
   try {
-    const { studentId } = req.body
+    const { studentId } = req.body ?? {}
     if (!studentId) {
       return res.status(400).json({ error: "studentId is required" })
     }
@@ -93,6 +105,9 @@ export async function addStudent(req, res) {
     const link = await coursesRepository.addStudent(course.id, studentId)
     res.status(201).json(link)
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     if (err.code === "23503") {
       return res.status(400).json({ error: "student does not exist" })
     }
@@ -118,6 +133,9 @@ export async function removeStudent(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }
@@ -132,6 +150,9 @@ export async function deleteCourse(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }

@@ -19,6 +19,9 @@ export async function getSingleStudent(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }
@@ -26,13 +29,16 @@ export async function getSingleStudent(req, res) {
 
 export async function createStudent(req, res) {
   try {
-    const { name, year, houseId } = req.body
+    const { name, year, houseId } = req.body ?? {}
     if (!name) {
       return res.status(400).json({ error: "name is required" })
     }
     const student = await studentsRepository.createStudent(name, year, houseId)
     res.status(201).json(student)
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     if (err.code === "23503") {
       return res.status(400).json({ error: "house does not exist" })
     }
@@ -43,7 +49,7 @@ export async function createStudent(req, res) {
 
 export async function updateStudent(req, res) {
   try {
-    const { name, year, houseId } = req.body
+    const { name, year, houseId } = req.body ?? {}
     if (!name) {
       return res.status(400).json({ error: "name is required" })
     }
@@ -59,6 +65,9 @@ export async function updateStudent(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     if (err.code === "23503") {
       return res.status(400).json({ error: "house does not exist" })
     }
@@ -76,6 +85,9 @@ export async function deleteStudent(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }

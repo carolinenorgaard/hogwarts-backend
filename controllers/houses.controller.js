@@ -20,6 +20,9 @@ export async function getSingleHouse(req, res) {
       res.sendStatus(404)
     }
   } catch (err) {
+    if (err.code === "22P02") {
+      return res.sendStatus(400)
+    }
     console.error(err)
     res.status(500).json({ error: "Database error" })
   }
